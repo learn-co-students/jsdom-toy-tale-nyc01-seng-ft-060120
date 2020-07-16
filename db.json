@@ -22,7 +22,7 @@
       "id": 4,
       "name": "Slinky Dog",
       "image": "https://www.freeiconspng.com/uploads/slinky-png-transparent-1.png",
-      "likes": 4
+      "likes": 5
     },
     {
       "id": 5,
@@ -46,7 +46,55 @@
       "id": 8,
       "name": "Little Green Men",
       "image": "http://www.pngmart.com/files/3/Toy-Story-Alien-PNG-File.png",
-      "likes": -2
+      "likes": -1
+    },
+    {
+      "name": "Max",
+      "image": "Hello",
+      "likes": 2,
+      "id": 9
+    },
+    {
+      "name": "Daniel",
+      "image": "https://picsum.photos/200",
+      "likes": 2,
+      "id": 10
+    },
+    {
+      "name": "Andrew",
+      "image": "https://picsum.photos/200",
+      "likes": 0,
+      "id": 11
+    },
+    {
+      "name": "Jeff",
+      "image": "https://picsum.photos/200",
+      "likes": 0,
+      "id": 12
+    },
+    {
+      "name": "Steven",
+      "image": "hiuwefw",
+      "likes": 0,
+      "id": 13
+    },
+    {
+      "name": "Max 2",
+      "image": "fuiwenfw",
+      "likes": 0,
+      "id": 14
+    },
+    {
+      "name": "owenufwe",
+      "image": "owiefwife",
+      "likes": 0,
+      "id": 15
+    },
+    {
+      "name": "iufnwienwf",
+      "image": "iwjeifunwef",
+      "likes": 0,
+      "id": 16
     }
   ]
 }

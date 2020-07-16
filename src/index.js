@@ -5,6 +5,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const addBtn = document.querySelector("#new-toy-btn");
   const toyFormContainer = document.querySelector(".container");
   const form = document.querySelector('.add-toy-form');
+  const collection = document.querySelector('#toy-collection')
+
+  collection.addEventListener('click', (e) => {
+    if (e.target.className === 'like-btn') {
+      let toyId = e.target.parentNode.dataset.id
+      let likes = parseInt(e.target.parentNode.children[2].textContent.split(' Likes')[0], 10)
+      addLike(toyId, likes)
+    }
+  })
+
   addBtn.addEventListener("click", () => {
     // hide & seek with the form
     addToy = !addToy;
@@ -31,6 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchToys()
 });
 
+
+
 function renderToys(toys){
   toys.forEach( toy => {
     renderToy(toy)
@@ -48,6 +60,7 @@ function renderToy(toy) {
   <p>${toy.likes} Likes </p>
   <button class="like-btn">Like <3</button>
   `
+  toyDiv.dataset.id = `${toy.id}`
   toyCollection.appendChild(toyDiv);
   
 }
@@ -68,4 +81,28 @@ function createToy(newToy){
     body: JSON.stringify(newToy)
   }).then(res => res.json())
   .then(toy => (renderToy(toy)))
+}
+
+function addLike(toyId, likes) {
+  likes++;
+  
+  fetch(`${url}/${toyId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({ likes: likes }),
+  })
+    .then((resp) => resp.json())
+    .then((updatedToy) => updateLikes(updatedToy));
+}
+
+function updateLikes(updatedToy) {
+  let id = updatedToy.id
+  let toyDiv = document.querySelector(`*[data-id='${id}']`);
+  let likes = parseInt(toyDiv.children[2].innerHTML.split(' Likes')[0])
+  likes++;
+  
+  toyDiv.children[2].innerHTML = `${likes} Likes`
 }

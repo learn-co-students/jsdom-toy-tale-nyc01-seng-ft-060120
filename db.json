@@ -51,13 +51,13 @@
     {
       "name": "Shiro",
       "image": "www.google.com",
-      "likes": 0,
+      "likes": 10,
       "id": 9
     },
     {
       "name": "maya",
       "url": "www.google.com",
-      "likes": 0,
+      "likes": 10,
       "id": 10
     }
   ]

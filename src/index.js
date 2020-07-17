@@ -99,10 +99,9 @@ function addLike(toyId, likes) {
 }
 
 function updateLikes(updatedToy) {
-  let id = updatedToy.id
+  let id = updatedToy.id;
+  let likes = updatedToy.likes;
   let toyDiv = document.querySelector(`*[data-id='${id}']`);
-  let likes = parseInt(toyDiv.children[2].innerHTML.split(' Likes')[0])
-  likes++;
   
-  toyDiv.children[2].innerHTML = `${likes} Likes`
+  toyDiv.children[2].innerHTML = `${likes} Likes`;
 }

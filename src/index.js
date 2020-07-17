@@ -10,8 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   collection.addEventListener('click', (e) => {
     if (e.target.className === 'like-btn') {
       let toyId = e.target.parentNode.dataset.id
-      let likes = parseInt(e.target.parentNode.children[2].textContent.split(' Likes')[0], 10)
-      addLike(toyId, likes)
+      startAddLike(toyId);
     }
   })
 
@@ -32,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let newToy = {};
 
     newToy.name = formName.value;
-    newToy.url = formURL.value;
+    newToy.image = formURL.value;
     newToy.likes = 0;
     
     createToy(newToy);
@@ -40,8 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   fetchToys()
 });
-
-
 
 function renderToys(toys){
   toys.forEach( toy => {
@@ -83,8 +80,14 @@ function createToy(newToy){
   .then(toy => (renderToy(toy)))
 }
 
-function addLike(toyId, likes) {
-  likes++;
+function startAddLike(toyId){
+  fetch(`${url}/${toyId}`)
+  .then(res => res.json())
+  .then(toy => patchLike(toy.id, toy.likes))
+}
+
+function patchLike(toyId, toyLikes) {
+  toyLikes++;
   
   fetch(`${url}/${toyId}`, {
     method: "PATCH",
@@ -92,10 +95,10 @@ function addLike(toyId, likes) {
       "Content-Type": "application/json",
       Accept: "application/json",
     },
-    body: JSON.stringify({ likes: likes }),
+    body: JSON.stringify({ likes: toyLikes }),
   })
     .then((resp) => resp.json())
-    .then((updatedToy) => updateLikes(updatedToy));
+    .then((updatedToy) => updateLikes(updatedToy))
 }
 
 function updateLikes(updatedToy) {

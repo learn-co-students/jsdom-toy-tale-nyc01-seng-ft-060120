@@ -50,15 +50,15 @@
     },
     {
       "name": "Shiro",
-      "image": "www.google.com",
+      "image": "https://ca.slack-edge.com/T02MD9XTF-U0149P28WBU-de0d070dd1f1-512",
       "likes": 10,
       "id": 9
     },
     {
       "name": "maya",
-      "url": "www.google.com",
+      "image": "https://ca.slack-edge.com/T02MD9XTF-U0149V711B5-b550a063d7f8-512",
       "likes": 10,
-      "id": 10
+      "id": 0
     }
   ]
 }

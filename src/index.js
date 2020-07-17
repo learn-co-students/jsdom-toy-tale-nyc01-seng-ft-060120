@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderToys(toy){
     const card = document.createElement('div');
         card.setAttribute('class', 'card');
+        
         card.innerHTML = `
         <h2>${toy.name}<h2>
         <img class="toy-avatar" src="${toy.image}" />
@@ -37,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-    fetch(`${url}/${id}`, {
+    fetch(`http://localhost:3000/toys/${id}`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -59,18 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
  
   
 
-//   function createCard() {
-//     let card = document.createElement('div');
-//     toys.forEach(card => {
-//     card.setAttribute('class', 'card');
-//       const h5 = document.createElement('h5')
-//       h5.innerHTML = toy.name
-//       card.appendChild(h5)
-//     toyList.append(card);
-//   })
-// }
-//   function renderToys(toys) {  }
-// });
+
+
   
 
 

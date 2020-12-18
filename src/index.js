@@ -1,118 +1,113 @@
-let addToy = false;
 
 document.addEventListener("DOMContentLoaded", () => {
   const addBtn = document.querySelector("#new-toy-btn");
   const toyFormContainer = document.querySelector(".container");
-  addBtn.addEventListener("click", () => {
-    // hide & seek with the form
-    addToy = !addToy;
-    if (addToy) {
-      toyFormContainer.style.display = "block";
-    } else {
-      toyFormContainer.style.display = "none";
-    }
-  });
-
-  // MY CODE BELOW 
-
-  const toysUrl = "http://localhost:3000/toys/"
+  const toyURL = `http://localhost:3000/toys`
   const toyCollectionDiv = document.querySelector('#toy-collection')
-  const addToyForm = document.querySelector('.add-toy-form')
-  // console.log(addToyForm)
-
-  function fetchToys(){
-
-    fetch(toysUrl)
-    .then(resp => resp.json())
-    .then(toys => {
-      toyCollectionDiv.innerHTML = ''
-      renderAllToys(toys)})
+  const toyForm = document.querySelector('.add-toy-form')
+  let addToy = false;
+  
+  
+  function toggleForm(){
+    addBtn.addEventListener("click", () => {
+      // hide & seek with the form
+      addToy = !addToy;
+      if (addToy) {
+        toyFormContainer.style.display = "block";
+        } else {
+          toyFormContainer.style.display = "none";
+        }
+      });
   }
 
-  function renderAllToys(toys){
-    toys.forEach( toy => renderToy(toy))
+  function fetchToys(){
+    return fetch(toyURL)
+            .then(resp => resp.json())
+            .then(toyArray => renderAllToys(toyArray))
+  }
+
+  function renderAllToys(array){
+    array.forEach(toy => {renderToy(toy)})
   }
 
   function renderToy(toy){
-    
-    const divCard = document.createElement('div')
-    divCard.classList += "card"
-    divCard.dataset.toyId = toy.id
-    divCard.innerHTML = `
-      <h2>${toy.name}</h2>
-      <img src=${toy.image} class="toy-avatar" />
-      <p>${toy.likes} Likes </p>
-    `
+      const toyDiv = document.createElement('div')
+      toyDiv.className = "card"
+      toyDiv.id = toy.id
+      toyCollectionDiv.prepend(toyDiv)
+      toyDiv.innerHTML = `
+        <h2>${toy.name}</h2>
+        <img src=${toy.image} class="toy-avatar" />
+        <p><span>${toy.likes}</span> Likes </p>
+        <button class="like-btn">Like <3</button>
+        <button class="delete-toy">Delete Toy</button>
+      `
+      const likeBtn = document.querySelector('.like-btn')
+      likeBtn.addEventListener("click", (e) => updateLikes(e,toy))
 
-    const button = document.createElement('button')
-    button.classList += "like-btn"
-    
-    
-    button.innerText = "Like <3"
-
-    toyCollectionDiv.append(divCard)
-    divCard.append(button)
-
-    button.addEventListener('click', (e) => addLikes(toy))
-    
+      const deleteBtn = document.querySelector('.delete-toy')
+      deleteBtn.addEventListener("click", (e) => deleteToy(e,toy))
   }
 
-  function addLikes(toy){
-    const button = document.querySelector('.like-btn')
-    const likes = toy.likes
-
-    const newLikes = parseInt(likes, 10) + 1
-    console.log(toysUrl + toy.id)
-    console.log(newLikes)
-   
-      fetch(`${toysUrl}${toy.id}`,{
-        method: "PATCH",
-        headers: {
-          "content-type": "application/json",
-          "accept": "application/json"
-        },
-        body: JSON.stringify({
-          likes: newLikes
-        })
+  function updateLikes(e, toy){
+    const span = e.target.previousElementSibling.children[0]
+    let count = Number(span.innerText) + 1
+    
+    fetch(`${toyURL}/${toy.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        likes: count
       })
-      fetchToys()
-      // .then(resp => resp.json())
-      // .then(data => renderToy(data))
-      // .catch(errors => alert(errors.message))
-  }
-  
-  function addNewToy(){
-  
-    addToyForm.addEventListener('submit', (e) => {
-      e.preventDefault()
+    })
+    .then(resp => resp.json())
+    .then(span.innerText = count)
 
-      const nameInput = addToyForm.querySelector('[name="name"]')
-      const imageInput = addToyForm.querySelector('[name="image"]')
-      
-      fetch(toysUrl,{
+  }
+
+  function deleteToy(e, toy){
+    console.log("in delete toy", toy.id)
+    fetch(`${toyURL}/${toy.id}`, {
+      method: "DELETE"
+    })
+    .then(resp => resp.json())
+    .then(e.target.parentElement.remove())
+  }
+
+  function submitToy(){
+    toyForm.addEventListener("submit", (e) =>{
+      e.preventDefault()
+      const formInputs = toyForm.children
+
+      fetch(toyURL,{
         method: "POST",
         headers: {
-          "content-type":"application/json",
-          "accept":"application/json"
+          "Content-Type": "application/json",
+          Accept: "application.json"
         },
         body: JSON.stringify({
-          name: nameInput.value,
-          image: imageInput.value,
+          name: formInputs[1].value,
+          image: formInputs[3].value,
           likes: 0
         })
       })
-      .then(resp => resp.json())
-      .then( data => renderToy(data))
+      .then(resp =>resp.json())
+      .then(toy => renderToy(toy))
 
-      resetForm(addToyForm)
+      resetForm()
     })
   }
 
-  function resetForm(addToyForm){
-    addToyForm.reset()
+  function resetForm(){
+    console.log("reset")
+    toyForm.reset()
   }
 
-
-fetchToys();
-addNewToy();
+  toggleForm();
+  submitToy();
+  fetchToys();
 });
+
